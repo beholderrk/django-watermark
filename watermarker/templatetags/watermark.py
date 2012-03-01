@@ -8,6 +8,7 @@ import traceback
 
 from django.conf import settings
 from django import template
+from django.utils.encoding import smart_str
 from watermarker import utils
 from watermarker.models import Watermark
 
@@ -95,9 +96,11 @@ class Watermarker(object):
             return url
 
         # make sure URL is a string
-        url = str(url)
+        url = unicode(url)
+
 
         basedir = '%s/watermarked' % os.path.dirname(url)
+        basedir = basedir.replace(settings.DIRNAME, '')
         base, ext = os.path.splitext(os.path.basename(url))
 
         # open the target image file along with the watermark image
@@ -200,7 +203,7 @@ class Watermarker(object):
     def watermark_path(self, basedir, base, ext, wm_name, obscure=True):
         """Determines an appropriate watermark path"""
 
-        hash = sha1(wm_name).hexdigest()
+        hash = sha1(smart_str(wm_name)).hexdigest()
 
         # figure out where the watermark would be saved on the filesystem
         if obscure:
