@@ -87,6 +87,9 @@ class Watermarker(object):
           is 85.
         """
 
+        if url.startswith('http'):
+            return url
+
         # look for the specified watermark by name.  If it's not there, go no
         # further
         try:
