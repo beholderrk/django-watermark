@@ -9,6 +9,7 @@ import traceback
 from django.conf import settings
 from django import template
 from django.utils.encoding import smart_str
+from django.utils.http import urlunquote
 from watermarker import utils
 from watermarker.models import Watermark
 
@@ -242,6 +243,8 @@ class Watermarker(object):
 
 def watermark(url, args=''):
     """Returns the URL to a watermarked copy of the image specified."""
+
+    url = urlunquote(url)
 
     # initialize some variables
     args = args.split(',')
